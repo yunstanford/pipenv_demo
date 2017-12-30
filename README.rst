@@ -12,3 +12,7 @@ pipenv install
 pipenv lock
 
 pipenv graph
+
+pipenv install --help
+
+pipenv install --verbose
