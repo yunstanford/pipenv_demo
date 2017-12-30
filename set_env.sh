@@ -5,6 +5,13 @@ CUR_DIR=`pwd`
 # install pipsi
 export PIPSI_HOME="$CUR_DIR/.local"
 export PIPSI_BIN_DIR="$CUR_DIR/bin"
+
+# check if cache exists
+if [ -d "$PIPSI_HOME" ]; then
+  echo "Found Cache, you're good to go! :)"
+  exit
+fi
+
 curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
 
 PIPSI_EXECUTABLE=$PIPSI_BIN_DIR/pipsi
