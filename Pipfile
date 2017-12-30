@@ -9,6 +9,8 @@ name = "pypi"
 
 aiohttp = "*"
 
+
 [packages]
 
 requests = "*"
+pytest = "*"

@@ -9,6 +9,8 @@ pipenv --python 3.6
 
 pipenv install
 
+pipenv uninstall
+
 pipenv lock
 
 pipenv graph
@@ -16,3 +18,5 @@ pipenv graph
 pipenv install --help
 
 pipenv install --verbose
+
+pipenv run py.test tests
