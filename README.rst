@@ -24,3 +24,5 @@ pipenv install --help
 pipenv install --verbose
 
 pipenv run py.test tests
+
+pipenv check --style ./demo
