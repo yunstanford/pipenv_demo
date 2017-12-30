@@ -5,7 +5,11 @@ a simple pipenv test or demo
 
 pipenv --python 2.7
 
+pipenv --two
+
 pipenv --python 3.6
+
+pipenv --three
 
 pipenv install
 
