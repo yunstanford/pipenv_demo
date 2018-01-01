@@ -12,7 +12,7 @@ if [ -d "$PIPSI_HOME" ]; then
   exit
 fi
 
-curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
+curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python - --src 'git+https://github.com/mitsuhiko/pipsi.git#egg=pipsi'
 
 PIPSI_EXECUTABLE=$PIPSI_BIN_DIR/pipsi
 export PATH=$PIPSI_BIN_DIR:$PATH
