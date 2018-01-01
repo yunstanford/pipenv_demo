@@ -10,6 +10,7 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 PIPENV_SANDBOX = os.path.join(ROOT, ".local", "pipenv")
 PIPENV_BIN =  os.path.join(ROOT, "bin")
 PIPENV_ENTRY = os.path.join(ROOT, "bin", "pipenv")
+SET_ENV_SCRIPT = os.path.join(ROOT, "set_env.sh")
 
 
 LOGGER = logging.getLogger(__name__)
