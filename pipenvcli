@@ -124,7 +124,7 @@ def _download_scripts():
         _download(url, 'bin')
 
 
-def _download(build, url, destination):
+def _download(url, destination):
     cache_path = "{0}/{1}".format(ROOT, destination)
     filename = url.split("/")[-1]
     LOGGER.info("Downloading {0} script from ".format(filename) + url)
@@ -132,7 +132,7 @@ def _download(build, url, destination):
     body = urlopen(url).read()
     LOGGER.info("caching script...")
     _store_cache(body, cache_path, filename)
-    _chmod(build, cache_path, filename)
+    _chmod(cache_path, filename)
     LOGGER.info("=== Done! ===")
 
 
