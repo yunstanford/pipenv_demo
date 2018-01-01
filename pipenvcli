@@ -5,13 +5,20 @@ import logging
 import subprocess
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
+try:
+    from urllib2 import urlopen as urlopen
+except:
+    from urllib.request import urlopen as urlopen
+
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 PIPENV_SANDBOX = os.path.join(ROOT, ".local", "pipenv")
 PIPENV_BIN =  os.path.join(ROOT, "bin")
 PIPENV_ENTRY = os.path.join(ROOT, "bin", "pipenv")
 SET_ENV_SCRIPT = os.path.join(ROOT, "set_env.sh")
-
+SCRIPT_URLS = [
+    "https://raw.githubusercontent.com/yunstanford/pipenv_demo/master/set_env.sh"
+]
 
 LOGGER = logging.getLogger(__name__)
 
@@ -87,14 +94,61 @@ def _pipenv_exists():
 
 
 def _run_pipenv(args):
-    if _pipenv_exists():
-        # set env var properly
-        os.environ["PATH"] = "{}:{}".format(PIPENV_BIN, os.environ.get("PATH"))
-        command = [PIPENV_ENTRY]
-        command.extend(args)
-        subprocess.call(command)
-    else:
-        LOGGER.info("pipenv doesn't exist, please set up env first..")
+    if not _pipenv_exists():
+        LOGGER.info("pipenv doesn't exist, let's set up env first..")
+        set_env()
+
+    # set env var properly
+    os.environ["PATH"] = "{}:{}".format(PIPENV_BIN, os.environ.get("PATH"))
+    command = [PIPENV_ENTRY]
+    command.extend(args)
+    subprocess.call(command)
+
+
+def set_env():
+    _download_scripts()
+    _run_scripts()
+
+
+def _run_scripts():
+    for url in SCRIPT_URLS:
+        filename = url.split("/")[-1]
+        LOGGER.info("Executing {0} script from ".format(filename) + url)
+        subprocess.call([
+            "bash", os.path.join(ROOT, "bin", filename)
+        ])
+
+
+def _download_scripts():
+    for url in SCRIPT_URLS:
+        _download(url, 'bin')
+
+
+def _download(build, url, destination):
+    cache_path = "{0}/{1}".format(ROOT, destination)
+    filename = url.split("/")[-1]
+    LOGGER.info("Downloading {0} script from ".format(filename) + url)
+    LOGGER.info("loading script...")
+    body = urlopen(url).read()
+    LOGGER.info("caching script...")
+    _store_cache(body, cache_path, filename)
+    _chmod(build, cache_path, filename)
+    LOGGER.info("=== Done! ===")
+
+
+def _store_cache(body, cache_path, filename):
+    if not os.path.exists(cache_path):
+        os.makedirs(cache_path)
+    cached_script = os.path.join(cache_path, filename)
+    with open(cached_script, "wb+") as fh:
+        fh.write(body)
+
+
+def _chmod(path, filename):
+    subprocess.call([
+        "chmod", "+x", "{0}/{1}".format(path, filename)
+    ])
+    LOGGER.info("Change {0}/{1} permision mode to be 755".format(path, filename))
 
 
 def main(argv):
@@ -106,7 +160,7 @@ def _create_stdout_logger():
     """ create a logger to stdout """
     log = logging.getLogger(__name__)
     out_hdlr = logging.StreamHandler(sys.stdout)
-    out_hdlr.setFormatter(logging.Formatter('%(message)s'))
+    out_hdlr.setFormatter(logging.Formatter('[%(asctime)s] %(message)s', "%H:%M:%S"))
     out_hdlr.setLevel(logging.INFO)
     log.addHandler(out_hdlr)
     log.setLevel(logging.INFO)
