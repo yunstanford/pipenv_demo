@@ -100,6 +100,8 @@ def _run_pipenv(args):
 
     # set env var properly
     os.environ["PATH"] = "{}:{}".format(PIPENV_BIN, os.environ.get("PATH"))
+    os.environ["PIPENV_VENV_IN_PROJECT"] = "1"
+
     command = [PIPENV_ENTRY]
     command.extend(args)
     subprocess.call(command)
