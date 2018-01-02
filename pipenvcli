@@ -18,9 +18,9 @@ except:
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 VIRTUALENV_DIR = os.path.join(ROOT, ".sandbox")
-PIPENV_SANDBOX = os.path.join(ROOT, ".local", "pipenv")
-PIPENV_BIN =  os.path.join(ROOT, "bin")
-PIPENV_ENTRY = os.path.join(ROOT, "bin", "pipenv")
+PIPENV_SANDBOX = os.path.join(ROOT, ".sandbox", "bin")
+PIPENV_BIN =  os.path.join(VIRTUALENV_DIR, "bin")
+PIPENV_ENTRY = os.path.join(PIPENV_SANDBOX, "pipenv")
 SET_ENV_SCRIPT = os.path.join(ROOT, "set_env.sh")
 SCRIPT_URLS = [
     "https://raw.githubusercontent.com/yunstanford/pipenv_demo/master/set_env.sh"
@@ -114,7 +114,7 @@ def _run_pipenv(args):
         set_env()
 
     # activate pipenv virtualenv
-    # _activate_virtualenv(VIRTUALENV_DIR)
+    _activate_virtualenv(VIRTUALENV_DIR)
 
     # set env var properly
     os.environ["PATH"] = "{}:{}".format(PIPENV_BIN, os.environ.get("PATH"))
@@ -130,8 +130,21 @@ def set_env():
     # activate pipenv virtualenv
     _activate_virtualenv(VIRTUALENV_DIR)
 
-    _download_scripts()
-    _run_scripts()
+    # _download_scripts()
+    # _run_scripts()
+
+    os.chdir(ROOT)
+    subprocess.call([
+        os.path.join(VIRTUALENV_DIR, "bin", "pip"),
+        "install",
+        "pew"
+    ])
+    subprocess.call([
+        os.path.join(VIRTUALENV_DIR, "bin", "pip"),
+        "install",
+        "pipenv"
+    ])
+
 
 
 def _run_scripts():
