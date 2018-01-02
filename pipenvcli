@@ -139,7 +139,7 @@ def _run_scripts():
         filename = url.split("/")[-1]
         LOGGER.info("Executing {0} script from ".format(filename) + url)
         subprocess.call([
-            "bash", os.path.join(ROOT, "bin", filename)
+            "sh", os.path.join(ROOT, "bin", filename)
         ])
 
 
