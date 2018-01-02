@@ -3,26 +3,26 @@ a simple pipenv test or demo
 
 ./set_env.sh
 
-pipenv --python 2.7
+./pipenvcli --python 2.7
 
-pipenv --two
+./pipenvcli --two
 
-pipenv --python 3.6
+./pipenvcli --python 3.6
 
-pipenv --three
+./pipenvcli --three
 
-pipenv install
+./pipenvcli install
 
-pipenv uninstall
+./pipenvcli uninstall
 
-pipenv lock
+./pipenvcli lock
 
-pipenv graph
+./pipenvcli graph
 
-pipenv install --help
+./pipenvcli install --help
 
-pipenv install --verbose
+./pipenvcli install --verbose
 
-pipenv run py.test tests
+./pipenvcli run py.test tests
 
-pipenv check --style ./demo
+./pipenvcli check --style ./demo
