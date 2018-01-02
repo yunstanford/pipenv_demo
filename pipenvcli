@@ -17,7 +17,7 @@ except:
 
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
-PIPENV_DIR = os.path.join(ROOT, ".local")
+VIRTUALENV_DIR = os.path.join(ROOT, ".sandbox")
 PIPENV_SANDBOX = os.path.join(ROOT, ".local", "pipenv")
 PIPENV_BIN =  os.path.join(ROOT, "bin")
 PIPENV_ENTRY = os.path.join(ROOT, "bin", "pipenv")
@@ -114,7 +114,7 @@ def _run_pipenv(args):
         set_env()
 
     # activate pipenv virtualenv
-    _activate_virtualenv(PIPENV_DIR)
+    # _activate_virtualenv(VIRTUALENV_DIR)
 
     # set env var properly
     os.environ["PATH"] = "{}:{}".format(PIPENV_BIN, os.environ.get("PATH"))
@@ -126,15 +126,16 @@ def _run_pipenv(args):
 
 
 def set_env():
-    _install_virtualenv(PIPENV_DIR)
+    _install_virtualenv(VIRTUALENV_DIR)
     # activate pipenv virtualenv
-    _activate_virtualenv(PIPENV_DIR)
+    _activate_virtualenv(VIRTUALENV_DIR)
 
     _download_scripts()
     _run_scripts()
 
 
 def _run_scripts():
+    os.chdir(ROOT)
     for url in SCRIPT_URLS:
         filename = url.split("/")[-1]
         LOGGER.info("Executing {0} script from ".format(filename) + url)
