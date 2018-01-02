@@ -1,6 +1,8 @@
 #!/bin/sh -e
 
 CUR_DIR=`pwd`
+CUR_DIR=`dirname $CUR_DIR`
+
 
 # install pipsi
 export PIPSI_HOME="$CUR_DIR/.local"
